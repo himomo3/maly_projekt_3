@@ -4,6 +4,7 @@ Projekt analizuje dane PM2.5 z różnych stacji pomiarowych w Polsce. Oblicza ś
 
 ## Struktura projektu
 
+```text
 projekt3/
 |-- .ipynb_checkpoints
 | |-- data_loader-checkpoint.py
@@ -21,7 +22,7 @@ projekt3/
 |-- projekt_1_Martyna_Pawlak_Szymon_Debowski.ipynb
 |-- projekt_3.ipynb
 
----
+```
 
 ## Wymagania pakietów
 - python >= 3.11
