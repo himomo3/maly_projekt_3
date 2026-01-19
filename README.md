@@ -35,10 +35,10 @@ projekt3/
 - obliczone średnie miesięczne stężenie PM2.5 dla każdej stacji i roku
 - wykres dla Warszawy i Katowic pokazujący trend średnich miesięcznych wartości z wybrancyh lat
 
-## Zadanie 3
+### Zadanie 3
 - heatmapa miesięcznych średnich
 
-## Zadanie 4
+### Zadanie 4
 - wyliczenie dni z przekroczenem normy
 
 
@@ -59,9 +59,9 @@ pip install pandas numpy seaborn matplotlib pytest
 
 Pliki podane poniżej są wczytywane przez plik projekt_3.ipynb. Dzięki nim kod jest ujednolicony i podzielony na funkcje. Te pliki umożliwiają również szybkie generowanie wykresów.
 
--data_cleaner.py
--data_loader.py
--data_statistics.py
+- data_cleaner.py
+- data_loader.py
+- data_statistics.py
 
 
 ## Instalacja
