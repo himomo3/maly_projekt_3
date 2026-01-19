@@ -188,6 +188,7 @@ def plot_city_heatmaps(df_heatmap):
     plt.tight_layout()
     plt.show()
 
+
 # Funkcje do zadania 4.
 
 def calculate_daily_exceedances(df, threshold=15):
@@ -282,6 +283,67 @@ def plot_manual_bars(wynik, ranking_year, years_to_analyze):
     plt.legend(title="Rok")
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
+    plt.gca().set_axisbelow(True)
+    
+    plt.tight_layout()
+    plt.show()
+
+
+# Funkcje do zadania 5.
+
+def plot_by_voivodeship(wynik, df_meta, years_to_analyze):
+    """
+    Rysuje wykres słupkowy liczby dni z przekroczeniem normy PM2.5,
+    grupując dane po województwach.
+    """
+    
+    # Kopia wyników
+    df_wynik = wynik.copy()
+    
+    station_codes = df_wynik.columns.get_level_values(0)
+        
+    # Tworzymy mapowanie Kod stacji -> Województwo
+    station_to_voivodeship = df_meta['Województwo'].to_dict()
+    
+    # Przygotowujemy DataFrame do agregacji
+    # Transponujemy wynik, żeby mieć stacje w indeksie
+    df_t = df_wynik.T
+    
+    # Resetujemy indeks, żeby mieć kod stacji jako kolumnę (lub w indeksie)
+    df_t.index = df_t.index.get_level_values(0)
+        
+    # Dodajemy kolumnę z województwem
+    df_t['Województwo'] = df_t.index.map(station_to_voivodeship)
+    
+    # Usuwamy stacje, które nie mają przypisanego województwa (np. brak w metadanych)
+    df_t = df_t.dropna(subset=['Województwo'])
+    
+    # Grupujemy po województwie i liczymy średnią
+    voivodeship_means = df_t.groupby('Województwo').mean()
+    
+    # Sortujemy alfabetycznie dla porządku na osi X
+    voivodeship_means = voivodeship_means.sort_index()
+    
+    # Rysowanie
+    plt.figure(figsize=(14, 8))
+    
+    voivodeships = voivodeship_means.index.tolist()
+    x = np.arange(len(voivodeships))
+    width = 0.2
+    liczba_lat = len(years_to_analyze)
+    
+    for i, year in enumerate(years_to_analyze):
+        if year in voivodeship_means.columns:
+            offset = (i - (liczba_lat - 1) / 2) * width
+            wartosci = voivodeship_means[year]
+            
+            plt.bar(x + offset, wartosci, width, label=str(year))
+            
+    plt.xticks(x, [v.title() for v in voivodeships], rotation=45, ha='right', fontsize=10)
+    plt.ylabel("Średnia liczba dni z przekroczeniem", fontsize=12)
+    plt.title("Średnia liczba dni z przekroczeniem normy PM2.5 (>15 µg/m³) wg województw", fontsize=14)
+    plt.legend(title="Rok")
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.gca().set_axisbelow(True)
     
     plt.tight_layout()
